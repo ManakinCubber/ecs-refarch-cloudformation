@@ -305,11 +305,11 @@ Outputs:
         Value: !Ref PrivateSubnet2
 
     PrivateDataSubnet1:
-        Description: A refenrence to the private DB subnet in the 1st Availability Zone
+        Description: A reference to the private DB subnet in the 1st Availability Zone
         Value: !Ref PrivateDataSubnet1
 
     PrivateDataSubnet2:
-        Description: A refenrence to the private DB subnet in the 2nd Availability Zone
+        Description: A reference to the private DB subnet in the 2nd Availability Zone
         Value: !Ref PrivateDataSubnet2
 
     PrivateDataSubnets:
