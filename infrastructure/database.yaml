@@ -1,0 +1,39 @@
+Parameters:
+  VPC:
+    Description: Choose which VPC this ECS cluster should be deployed to
+    Type: AWS::EC2::VPC::Id
+
+  Subnets:
+    Description: Choose which subnets this ECS cluster should be deployed to
+    Type: List<AWS::EC2::Subnet::Id>
+
+  SecurityGroup:
+    Description: Select the Security Group to use for the ECS cluster hosts
+    Type: AWS::EC2::SecurityGroup::Id
+
+  DBUsername:
+    Default: ''
+    Description: Required - Username of database
+    Type: String
+  DBPassword:
+    Default: ''
+    Description: Required - Password for database
+    Type: String
+
+Resources:
+  Database:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBName: manakin
+      Engine: PostgreSQL
+      MasterUsername: !Ref 'DBUsername'
+      DBInstanceClass: db.t2.nano
+      AllocatedStorage: '20'
+      DBSubnetGroupName: !Ref 'DatabaseSubnetGroup'
+      MasterUserPassword: !Ref 'DBPassword'
+      VPCSecurityGroups: !Ref SecurityGroup
+  DatabaseSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: Subnets available for the RDS DB Instance
+      SubnetIds: !Ref Subnets
