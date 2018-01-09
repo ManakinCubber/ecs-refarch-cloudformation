@@ -25,6 +25,7 @@ Resources:
                 VpcCIDR:            10.180.0.0/16
                 PublicSubnet1CIDR:  10.180.8.0/21
                 PrivateSubnet1CIDR: 10.180.24.0/21
+                PrivateDataSubnet1CIDR: 10.180.32.0/21
 
     SecurityGroups:
         Type: AWS::CloudFormation::Stack
