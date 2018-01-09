@@ -19,7 +19,7 @@ Resources:
     VPC:
         Type: AWS::CloudFormation::Stack
         Properties:
-            TemplateURL: https://s3.amazonaws.com/ecs-refarch-cloudformation/infrastructure/vpc-mono-az.yaml
+            TemplateURL: https://s3-eu-west-1.amazonaws.com/manakin-cloudformation-templates/infrastructure/vpc-mono-az.yaml
             Parameters:
                 EnvironmentName:    !Ref AWS::StackName
                 VpcCIDR:            10.180.0.0/16
@@ -29,7 +29,7 @@ Resources:
     SecurityGroups:
         Type: AWS::CloudFormation::Stack
         Properties:
-            TemplateURL: https://s3.amazonaws.com/ecs-refarch-cloudformation/infrastructure/security-groups.yaml
+            TemplateURL: https://s3-eu-west-1.amazonaws.com/manakin-cloudformation-templates/infrastructure/security-groups.yaml
             Parameters: 
                 EnvironmentName: !Ref AWS::StackName
                 VPC: !GetAtt VPC.Outputs.VPC
@@ -37,7 +37,7 @@ Resources:
     ALB:
         Type: AWS::CloudFormation::Stack
         Properties:
-            TemplateURL: https://s3.amazonaws.com/ecs-refarch-cloudformation/infrastructure/load-balancers.yaml
+            TemplateURL: https://s3-eu-west-1.amazonaws.com/manakin-cloudformation-templates/infrastructure/load-balancers.yaml
             Parameters:
                 EnvironmentName: !Ref AWS::StackName
                 VPC: !GetAtt VPC.Outputs.VPC
@@ -47,7 +47,7 @@ Resources:
     ECS:
         Type: AWS::CloudFormation::Stack
         Properties:
-            TemplateURL: https://s3.amazonaws.com/ecs-refarch-cloudformation/infrastructure/ecs-cluster.yaml
+            TemplateURL: https://s3-eu-west-1.amazonaws.com/manakin-cloudformation-templates/infrastructure/ecs-cluster.yaml
             Parameters:
                 EnvironmentName: !Ref AWS::StackName
                 InstanceType: t2.medium
@@ -59,7 +59,7 @@ Resources:
     Database:
         Type: AWS::CloudFormation::Stack
         Properties:
-            TemplateURL: https://s3.amazonaws.com/ecs-refarch-cloudformation/infrastructure/database.yaml
+            TemplateURL: https://s3-eu-west-1.amazonaws.com/manakin-cloudformation-templates/infrastructure/database.yaml
             Parameters:
                 EnvironmentName: !Ref AWS::StackName
                 VPC: !GetAtt VPC.Outputs.VPC
