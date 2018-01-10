@@ -57,13 +57,3 @@ Resources:
                 VPC: !GetAtt VPC.Outputs.VPC
                 SecurityGroup: !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup
                 Subnets: !GetAtt VPC.Outputs.PrivateSubnets
-
-    Database:
-        Type: AWS::CloudFormation::Stack
-        Properties:
-            TemplateURL: https://s3-eu-west-1.amazonaws.com/manakin-cloudformation-templates/infrastructure/database.yaml
-            Parameters:
-                EnvironmentName: !Ref AWS::StackName
-                VPC: !GetAtt VPC.Outputs.VPC
-                SecurityGroup: !GetAtt SecurityGroups.Outputs.DBSecurityGroup
-                Subnets: !GetAtt VPC.Outputs.PrivateDataSubnets
