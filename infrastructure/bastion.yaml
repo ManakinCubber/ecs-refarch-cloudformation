@@ -59,9 +59,6 @@ Resources:
         Properties:
             KeyName: !Ref KeyName
             InstanceType: !Ref InstanceType
-            SubnetId: !Ref Subnets
-            SecurityGroupIds: [ !Ref SecurityGroup ]
-
-
-
-Outputs:
+            SubnetId: !Select [ 0, !Ref Subnets ]
+            SecurityGroupIds: [ SecurityGroup ]
+            ImageId: ami-bd10a7c0
