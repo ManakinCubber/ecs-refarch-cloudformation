@@ -18,15 +18,15 @@ Parameters:
         Default: ''
 
     VPC:
-        Description: Choose which VPC this ECS cluster should be deployed to
+        Description: Choose which VPC this Bastion should be deployed to
         Type: AWS::EC2::VPC::Id
 
     Subnets:
-        Description: Choose which subnets this ECS cluster should be deployed to
+        Description: Choose which subnets this Bastion should be deployed to
         Type: List<AWS::EC2::Subnet::Id>
 
     SecurityGroup:
-        Description: Select the Security Group to use for the ECS cluster hosts
+        Description: Select the Security Group to use for the Bastion
         Type: AWS::EC2::SecurityGroup::Id
 
 Mappings:
@@ -60,5 +60,5 @@ Resources:
             KeyName: !Ref KeyName
             InstanceType: !Ref InstanceType
             SubnetId: !Select [ 0, !Ref Subnets ]
-            SecurityGroupIds: [ SecurityGroup ]
+            SecurityGroupIds: [ !Ref SecurityGroup ]
             ImageId: ami-bd10a7c0
