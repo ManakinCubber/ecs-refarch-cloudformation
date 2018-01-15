@@ -10,12 +10,12 @@ Parameters:
     InstanceType:
         Description: Which instance type should we use to build the ECS cluster?
         Type: String
-        Default: t2.medium
+        Default: t2.micro
 
     KeyName:
         Description: Name of the SSH KeyPair
         Type: String
-        Default: ''
+        Default: 'test-keypair'
 
     VPC:
         Description: Choose which VPC this Bastion should be deployed to
@@ -61,4 +61,4 @@ Resources:
             InstanceType: !Ref InstanceType
             SubnetId: !Select [ 0, !Ref Subnets ]
             SecurityGroupIds: [ !Ref SecurityGroup ]
-            ImageId: ami-bd10a7c0
+            ImageId: ami-9f373dfb
