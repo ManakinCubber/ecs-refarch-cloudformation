@@ -14,6 +14,22 @@ Description: >
     Last Modified: 22nd September 2016
     Author: Paul Maddox <pmaddox@amazon.com>
 
+Parameters:
+    ECSInstanceType:
+        Type: String
+        AllowedValues:            
+            - t2.micro
+            - t2.small
+            - t2.medium
+        Default: t2.small
+        Description: Instance type for the ECS cluster hosts.
+
+    BastionKeyPair:
+        Type: String
+        Default: ''
+        Description: KayPair name to ssh to the bastion
+
+
 Resources:
 
     VPC:
@@ -62,3 +78,5 @@ Resources:
                 VPC: !GetAtt VPC.Outputs.VPC
                 SecurityGroup: !GetAtt SecurityGroups.Outputs.BastionSecurityGroup
                 Subnets: !GetAtt VPC.Outputs.PublicSubnets
+                KeyPair: !Ref BastionKeyPair
+
