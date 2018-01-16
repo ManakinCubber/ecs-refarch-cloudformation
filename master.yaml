@@ -79,6 +79,6 @@ Resources:
                 InstanceType: t2.micro
                 VPC: !GetAtt VPC.Outputs.VPC
                 SecurityGroups: [ !GetAtt SecurityGroups.Outputs.BastionSecurityGroup, !GetAtt VPC.Outputs.DefaultSecGroup ]
-                Subnets: !GetAtt VPC.Outputs.PublicSubnets
+                Subnets: !GetAtt VPC.Outputs.PublicSubnet1
                 KeyPair: !Ref BastionKeyPair
 

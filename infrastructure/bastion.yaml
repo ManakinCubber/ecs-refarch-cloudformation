@@ -23,11 +23,11 @@ Parameters:
 
     Subnets:
         Description: Choose which subnets this Bastion should be deployed to
-        Type: List<AWS::EC2::Subnet::Id>
+        Type: AWS::EC2::Subnet::Id
 
     SecurityGroups:
         Description: Select the Security Group to use for the Bastion
-        Type: AWS::EC2::SecurityGroup
+        Type: List<AWS::EC2::SecurityGroup::Id>
 Mappings:
 
     # These are the latest ECS optimized AMIs as of August 2017:
@@ -58,6 +58,6 @@ Resources:
         Properties:
             KeyName: !Ref KeyPair
             InstanceType: !Ref InstanceType
-            SubnetId: !Select [ 0, !Ref Subnets ]
-            SecurityGroupIds: [ !Ref SecurityGroups ]
+            SubnetId: !Ref Subnets
+            SecurityGroupIds: !Ref SecurityGroups
             ImageId: ami-9f373dfb
