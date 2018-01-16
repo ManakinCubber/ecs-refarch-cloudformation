@@ -55,7 +55,16 @@ Mappings:
 
 
 Resources:
-
+  HostedZone:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      HostedZoneConfig:
+        Comment: Hosted Zone for ECS Service Discovery
+      Name: servicediscovery.internal
+      VPCs:
+        - VPCId: !Ref 'VPC'
+          VPCRegion: !Ref 'AWS::Region'
+          
     ECSCluster:
         Type: AWS::ECS::Cluster
         Properties:
@@ -109,7 +118,7 @@ Resources:
                 config:
                     commands:
                         01_add_instance_to_cluster:
-                            command: !Sub echo ECS_CLUSTER=${ECSCluster} >> /etc/ecs/ecs.config
+                            command: !Sub echo ECS_CLUSTER=${ECSCluster} >> /etc/ecs/ecs.config && start ecssd_agent
                     files:
                         "/etc/cfn/cfn-hup.conf":
                             mode: 000400
@@ -127,6 +136,16 @@ Resources:
                                 path=Resources.ECSLaunchConfiguration.Metadata.AWS::CloudFormation::Init
                                 action=/opt/aws/bin/cfn-init -v --region ${AWS::Region} --stack ${AWS::StackName} --resource ECSLaunchConfiguration
 
+                        "/etc/init/ecssd_agent.conf":
+                            source: https://raw.githubusercontent.com/awslabs/service-discovery-ecs-dns/1.0/ecssd_agent.conf
+                            mode: '000644'
+                            owner: root
+                            group: root
+                        "/usr/local/bin/ecssd_agent":
+                            source: https://github.com/awslabs/service-discovery-ecs-dns/releases/download/1.6/ecssd_agent
+                            mode: '000755'
+                            owner: root
+                            group: root
                     services: 
                         sysvinit:
                             cfn-hup: 
