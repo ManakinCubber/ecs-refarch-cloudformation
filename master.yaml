@@ -13,7 +13,11 @@ Description: >
 
     Last Modified: 22nd September 2016
     Author: Paul Maddox <pmaddox@amazon.com>
-
+Parameters:
+    KeyPairName:
+        Description: KeyPair to use for ssh connection
+        Value: String
+        Default: ''
 Resources:
 
     VPC:
@@ -57,6 +61,7 @@ Resources:
                 VPC: !GetAtt VPC.Outputs.VPC
                 SecurityGroup: !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup
                 Subnets: !GetAtt VPC.Outputs.PrivateSubnets
+                KayPairName: !Ref KeyPairName
 
     Database:
         Type: AWS::CloudFormation::Stack
