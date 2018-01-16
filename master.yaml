@@ -57,6 +57,7 @@ Resources:
                 Subnets: !GetAtt VPC.Outputs.PublicSubnets
                 SecurityGroup: !GetAtt SecurityGroups.Outputs.LoadBalancerSecurityGroup
 
+
     ECS:
         Type: AWS::CloudFormation::Stack
         Properties:
@@ -68,6 +69,7 @@ Resources:
                 VPC: !GetAtt VPC.Outputs.VPC
                 SecurityGroup: !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup
                 Subnets: !GetAtt VPC.Outputs.PrivateSubnets
+                SSHKeyPair: !Ref BastionKeyPair
     Bastion:
         Type: AWS::CloudFormation::Stack
         Properties:
@@ -76,7 +78,7 @@ Resources:
                 EnvironmentName: !Ref AWS::StackName
                 InstanceType: t2.micro
                 VPC: !GetAtt VPC.Outputs.VPC
-                SecurityGroup: !GetAtt SecurityGroups.Outputs.BastionSecurityGroup
+                SecurityGroups: [ !GetAtt SecurityGroups.Outputs.BastionSecurityGroup, !GetAtt VPC.Outputs.DefaultSecGroup ]
                 Subnets: !GetAtt VPC.Outputs.PublicSubnets
                 KeyPair: !Ref BastionKeyPair
 

@@ -60,6 +60,7 @@ Resources:
 
     BastionSecurityGroup:
         Type: AWS::EC2::SecurityGroup
+        GroupName: BastionSecurityGroup
         Properties:
             GroupDescription: Security group for bastion
             VpcId: !Ref VPC
@@ -67,7 +68,7 @@ Resources:
                 - IpProtocol: tcp
                   FromPort: '22'
                   ToPort: '22'
-                  SourceSecurityGroupId: !Ref ECSHostSecurityGroup
+                  CidrIp: 0.0.0.0/0
 
 Outputs:
 

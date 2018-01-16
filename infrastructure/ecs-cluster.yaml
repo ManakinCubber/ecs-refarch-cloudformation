@@ -30,8 +30,8 @@ Parameters:
         Description: Select the Security Group to use for the ECS cluster hosts
         Type: AWS::EC2::SecurityGroup::Id
 
-    KeyPairName:
-        Description: Key Pair name
+    SSHKeyPair:
+        Description: The key name used to connect to ECS cluster hosts
         Type: String
 
 Mappings:
@@ -69,10 +69,10 @@ Resources:
         Type: AWS::AutoScaling::AutoScalingGroup
         Properties: 
             VPCZoneIdentifier: !Ref Subnets
-            KeyName: !Ref KeyPairName
             LaunchConfigurationName: !Ref ECSLaunchConfiguration
             MinSize: !Ref ClusterSize
             MaxSize: !Ref ClusterSize
+            KeyName: !Ref SSHKeyPair
             DesiredCapacity: !Ref ClusterSize
             Tags: 
                 - Key: Name
