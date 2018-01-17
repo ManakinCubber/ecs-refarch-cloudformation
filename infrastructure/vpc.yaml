@@ -122,9 +122,9 @@ Resources:
             MapPublicIpOnLaunch: false
             Tags:
                 - Key: Name
-                  Value: !Sub ${EnvironmentName} Private Subnet (AZ1)
+                  Value: !Sub ${EnvironmentName} Private Data Subnet (AZ1)
 
-    PrivateDataSubnet2DB:
+    PrivateDataSubnet2:
         Type: AWS::EC2::Subnet
         Properties:
             VpcId: !Ref VPC
@@ -133,7 +133,7 @@ Resources:
             MapPublicIpOnLaunch: false
             Tags:
                 - Key: Name
-                  Value: !Sub ${EnvironmentName} Private Subnet (AZ2)
+                  Value: !Sub ${EnvironmentName} Private Data Subnet (AZ2)
 
 
 
@@ -232,47 +232,6 @@ Resources:
         Properties:
             RouteTableId: !Ref PrivateRouteTable2
             SubnetId: !Ref PrivateSubnet2
-
-    PrivateDataRouteTable1:
-        Type: AWS::EC2::RouteTable
-        Properties:
-            VpcId: !Ref VPC
-            Tags:
-                - Key: Name
-                  Value: !Sub ${EnvironmentName} Private Routes (AZ2)
-
-    DefaultPrivateDataRoute1:
-        Type: AWS::EC2::Route
-        Properties:
-            RouteTableId: !Ref PrivateDataRouteTable1
-            DestinationCidrBlock: 0.0.0.0/0
-
-    PrivateDataSubnet1RouteTableAssociation:
-        Type: AWS::EC2::SubnetRouteTableAssociation
-        Properties:
-            RouteTableId: !Ref PrivateDataRouteTable1
-            SubnetId: !Ref PrivateDataSubnet1
-
-
-    PrivateDataRouteTable2:
-        Type: AWS::EC2::RouteTable
-        Properties:
-            VpcId: !Ref VPC
-            Tags:
-                - Key: Name
-                  Value: !Sub ${EnvironmentName} Private Routes (AZ2)
-
-    DefaultPrivateDataRoute2:
-        Type: AWS::EC2::Route
-        Properties:
-            RouteTableId: !Ref PrivateDataRouteTable2
-            DestinationCidrBlock: 0.0.0.0/0
-
-    PrivateDataSubnet2RouteTableAssociation:
-        Type: AWS::EC2::SubnetRouteTableAssociation
-        Properties:
-            RouteTableId: !Ref PrivateDataRouteTable2
-            SubnetId: !Ref PrivateDataSubnet2
 
 Outputs: 
 
