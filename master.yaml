@@ -86,7 +86,7 @@ Resources:
                 EnvironmentName: !Ref AWS::StackName
                 InstanceType: t2.micro
                 VPC: !GetAtt VPC.Outputs.VPC
-                SecurityGroups: [ !GetAtt SecurityGroups.Outputs.BastionSecurityGroup, !GetAtt VPC.Outputs.DefaultSecGroup ]
+                SecurityGroups: !Join [",", [ !GetAtt SecurityGroups.Outputs.BastionSecurityGroup, !GetAtt VPC.Outputs.DefaultSecGroup ]]
                 Subnets: !GetAtt VPC.Outputs.PublicSubnet1
                 KeyPair: !Ref BastionKeyPair
 
