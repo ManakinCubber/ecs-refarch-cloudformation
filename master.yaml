@@ -33,7 +33,10 @@ Parameters:
         Type: Number
         Description: Number of hosts in the ECS cluster
         Default: 1
-
+    
+    Domain:
+        Type: String
+        Description: The domain to generate DNS records in Route53
 
 Resources:
 
