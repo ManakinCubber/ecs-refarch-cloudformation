@@ -29,6 +29,11 @@ Parameters:
         Default: ''
         Description: KayPair name to ssh to the bastion
 
+    ClusterSize:
+        Type: Number
+        Description: Number of hosts in the ECS cluster
+        Default: 1
+
 
 Resources:
 
@@ -65,7 +70,7 @@ Resources:
             Parameters:
                 EnvironmentName: !Ref AWS::StackName
                 InstanceType: t2.medium
-                ClusterSize: 4
+                ClusterSize: !Ref ClusterSize
                 VPC: !GetAtt VPC.Outputs.VPC
                 SecurityGroup: !Join [",", [!GetAtt VPC.Outputs.DefaultSecGroup, !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup]]
                 Subnets: !GetAtt VPC.Outputs.PrivateSubnets
