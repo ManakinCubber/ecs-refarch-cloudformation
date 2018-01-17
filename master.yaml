@@ -38,6 +38,10 @@ Parameters:
         Type: String
         Description: The domain to generate DNS records in Route53
 
+    CertificateArn:
+        Description: A certificate arn associated with the domain
+        Type: String
+
 Resources:
 
     VPC:
@@ -64,7 +68,7 @@ Resources:
                 VPC: !GetAtt VPC.Outputs.VPC
                 Subnets: !GetAtt VPC.Outputs.PublicSubnets
                 SecurityGroup: !GetAtt SecurityGroups.Outputs.LoadBalancerSecurityGroup
-
+                CertificateArn: !Ref CertificateArn
 
     ECS:
         Type: AWS::CloudFormation::Stack
@@ -99,3 +103,4 @@ Resources:
                 Domain: !Ref Domain
                 VPC: !GetAtt VPC.Outputs.VPC
                 ALB80Listener: !GetAtt ALB.Outputs.Listener
+                ALB443Listener: !GetAtt ALB.Outputs.HttpsListener
