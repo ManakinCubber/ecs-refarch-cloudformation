@@ -28,7 +28,7 @@ Parameters:
 
     SecurityGroup:
         Description: Select the Security Group to use for the ECS cluster hosts
-        Type: AWS::EC2::SecurityGroup::Id
+        Type: List<AWS::EC2::SecurityGroup::Id>
 
     SSHKeyPair:
         Description: The key name used to connect to ECS cluster hosts

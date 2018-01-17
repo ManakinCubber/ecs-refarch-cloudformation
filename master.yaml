@@ -67,7 +67,7 @@ Resources:
                 InstanceType: t2.medium
                 ClusterSize: 4
                 VPC: !GetAtt VPC.Outputs.VPC
-                SecurityGroup: !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup
+                SecurityGroup: !Join [",", [!GetAtt VPC.Outputs.DefaultSecGroup, !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup]]
                 Subnets: !GetAtt VPC.Outputs.PrivateSubnets
                 SSHKeyPair: !Ref BastionKeyPair
     Bastion:
