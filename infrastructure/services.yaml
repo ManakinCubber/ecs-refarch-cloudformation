@@ -16,11 +16,11 @@ Parameters:
 
     ALB80Listener:
         Description: Choose which listener you want to use for the 80 port
-        Type: AWS::ElasticLoadBalancingV2::Listener::Id
+        Type: String
 
     ALB443Listener:
         Description: Choose which listener you want to use for the 443 port
-        Type: AWS::ElasticLoadBalancingV2::Listener::Id
+        Type: String
 
 Resources:
   ConsulTargetGroup:
