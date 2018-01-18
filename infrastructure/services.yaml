@@ -22,7 +22,7 @@ Parameters:
         Description: Choose which listener you want to use for the 443 port
         Type: AWS::ElasticLoadBalancingV2::Listener::Id
 
-Parameters:
+Resources:
   ConsulTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     Properties:
