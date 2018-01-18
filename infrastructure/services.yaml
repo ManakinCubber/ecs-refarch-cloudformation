@@ -1,0 +1,141 @@
+Description: Target groups for ALB and manakin project
+
+Parameters:
+
+    EnvironmentName:
+        Description: An environment name that will be prefixed to resource names
+        Type: String
+
+    Domain:
+        Description: An domain name for the url
+        Type: String
+
+    VPC:
+        Description: Choose which VPC this ECS cluster should be deployed to
+        Type: AWS::EC2::VPC::Id
+
+    ALB80Listener:
+        Description: Choose which listener you want to use for the 80 port
+        Type: String
+
+    ALB443Listener:
+        Description: Choose which listener you want to use for the 443 port
+        Type: String
+
+Resources:
+  ConsulTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: !Sub ${EnvironmentName}-Consul
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref VPC
+      HealthCheckPath: /v1/agent/members
+
+  ConsulListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: ConsulTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+          - !Sub consul.${Domain}
+      ListenerArn:
+        Ref: ALB80Listener
+      Priority: 1
+
+  ConsulListenerHttpsRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: ConsulTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+          - !Sub consul.${Domain}
+      ListenerArn:
+        Ref: ALB443Listener
+      Priority: 1
+
+  ApyBackTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: !Sub ${EnvironmentName}-Apy-Back
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref VPC
+      HealthCheckPath: /ping
+
+  ApyBackListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: ApyBackTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+          - !Sub api.${Domain}
+      ListenerArn:
+        Ref: ALB80Listener
+      Priority: 2
+
+  ApyBackListenerHttpsRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: ApyBackTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+          - !Sub api.${Domain}
+      ListenerArn:
+        Ref: ALB443Listener
+      Priority: 2
+
+  ApyFrontTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: !Sub ${EnvironmentName}-Apy-Front
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref VPC
+      HealthCheckPath: /
+
+  ApyFrontListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: ApyFrontTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+          - !Sub app.${Domain}
+      ListenerArn:
+        Ref: ALB80Listener
+      Priority: 3
+
+  ApyFrontListenerHttpsRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: ApyFrontTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+          - !Sub app.${Domain}
+      ListenerArn:
+        Ref: ALB443Listener
+      Priority: 3

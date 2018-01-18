@@ -14,6 +14,34 @@ Description: >
     Last Modified: 22nd September 2016
     Author: Paul Maddox <pmaddox@amazon.com>
 
+Parameters:
+    ECSInstanceType:
+        Type: String
+        AllowedValues:            
+            - t2.micro
+            - t2.small
+            - t2.medium
+        Default: t2.small
+        Description: Instance type for the ECS cluster hosts.
+
+    BastionKeyPair:
+        Type: String
+        Default: ''
+        Description: KayPair name to ssh to the bastion
+
+    ClusterSize:
+        Type: Number
+        Description: Number of hosts in the ECS cluster
+        Default: 1
+    
+    Domain:
+        Type: String
+        Description: The domain to generate DNS records in Route53
+
+    CertificateArn:
+        Description: A certificate arn associated with the domain
+        Type: String
+
 Resources:
 
     VPC:
@@ -21,7 +49,7 @@ Resources:
         Properties:
             TemplateURL: https://s3-eu-west-1.amazonaws.com/manakin-cloudformation-templates/infrastructure/vpc.yaml
             Parameters:
-                EnvironmentName:    !Ref AWS::StackName
+                EnvironmentName: !Ref AWS::StackName
 
     SecurityGroups:
         Type: AWS::CloudFormation::Stack
@@ -40,6 +68,7 @@ Resources:
                 VPC: !GetAtt VPC.Outputs.VPC
                 Subnets: !GetAtt VPC.Outputs.PublicSubnets
                 SecurityGroup: !GetAtt SecurityGroups.Outputs.LoadBalancerSecurityGroup
+                CertificateArn: !Ref CertificateArn
 
     ECS:
         Type: AWS::CloudFormation::Stack
@@ -48,7 +77,30 @@ Resources:
             Parameters:
                 EnvironmentName: !Ref AWS::StackName
                 InstanceType: t2.medium
-                ClusterSize: 4
+                ClusterSize: !Ref ClusterSize
                 VPC: !GetAtt VPC.Outputs.VPC
-                SecurityGroup: !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup
+                SecurityGroup: !Join [",", [!GetAtt VPC.Outputs.DefaultSecGroup, !GetAtt SecurityGroups.Outputs.ECSHostSecurityGroup]]
                 Subnets: !GetAtt VPC.Outputs.PrivateSubnets
+                SSHKeyPair: !Ref BastionKeyPair
+    Bastion:
+        Type: AWS::CloudFormation::Stack
+        Properties:
+            TemplateURL: https://s3-eu-west-1.amazonaws.com/manakin-cloudformation-templates/infrastructure/bastion.yaml
+            Parameters:
+                EnvironmentName: !Ref AWS::StackName
+                InstanceType: t2.micro
+                VPC: !GetAtt VPC.Outputs.VPC
+                SecurityGroups: !Join [",", [ !GetAtt SecurityGroups.Outputs.BastionSecurityGroup, !GetAtt VPC.Outputs.DefaultSecGroup ]]
+                Subnets: !GetAtt VPC.Outputs.PublicSubnet1
+                KeyPair: !Ref BastionKeyPair
+
+    Services:
+        Type: AWS::CloudFormation::Stack
+        Properties:
+            TemplateURL: https://s3-eu-west-1.amazonaws.com/manakin-cloudformation-templates/infrastructure/services.yaml
+            Parameters:
+                EnvironmentName: !Ref AWS::StackName
+                Domain: !Ref Domain
+                VPC: !GetAtt VPC.Outputs.VPC
+                ALB80Listener: !GetAtt ALB.Outputs.Listener
+                ALB443Listener: !GetAtt ALB.Outputs.HttpsListener
