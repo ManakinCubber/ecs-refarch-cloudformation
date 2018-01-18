@@ -60,4 +60,4 @@ Resources:
             InstanceType: !Ref InstanceType
             SubnetId: !Ref Subnets
             SecurityGroupIds: !Ref SecurityGroups
-            ImageId: ami-acd5cdc8
+            ImageId: ami-fe03b483
