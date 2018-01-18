@@ -97,7 +97,7 @@ Resources:
     Services:
         Type: AWS::CloudFormation::Stack
         Properties:
-            TemplateURL: https://s3-eu-west-1.amazonaws.com/pnpnpn-templates/infrastructure/services.yaml
+            TemplateURL: https://s3-eu-west-1.amazonaws.com/manakin-cloudformation-templates/infrastructure/services.yaml
             Parameters:
                 EnvironmentName: !Ref AWS::StackName
                 Domain: !Ref Domain
