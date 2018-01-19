@@ -190,7 +190,8 @@ Resources:
                                 "s3:GetObject",
                                 "s3:PutObject",
                                 "s3:ListBucket",
-                                "ses:*"
+                                "ses:*",
+                                "route53:*"
                             ],
                             "Resource": "*"
                         }]
