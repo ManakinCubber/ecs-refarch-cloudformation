@@ -31,6 +31,10 @@ Resources:
       Protocol: HTTP
       VpcId: !Ref VPC
       HealthCheckPath: /v1/agent/members
+      HealthCheckIntervalSeconds: 5
+      HealthCheckTimeoutSeconds: 4
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
 
   ConsulListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -70,6 +74,10 @@ Resources:
       Protocol: HTTP
       VpcId: !Ref VPC
       HealthCheckPath: /ping
+      HealthCheckIntervalSeconds: 5
+      HealthCheckTimeoutSeconds: 4
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
 
   ApyBackListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -109,6 +117,10 @@ Resources:
       Protocol: HTTP
       VpcId: !Ref VPC
       HealthCheckPath: /
+      HealthCheckIntervalSeconds: 5
+      HealthCheckTimeoutSeconds: 4
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
 
   ApyFrontListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
