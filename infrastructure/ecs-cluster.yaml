@@ -34,6 +34,10 @@ Parameters:
         Description: The key name used to connect to ECS cluster hosts
         Type: String
 
+    InternalDomain:
+        Type: String
+        Description: The domain to generate internal DNS records in Route53
+
 Mappings:
 
     # These are the latest ECS optimized AMIs as of August 2017:
@@ -64,7 +68,7 @@ Resources:
     Properties:
       HostedZoneConfig:
         Comment: Hosted Zone for ECS Service Discovery
-      Name: servicediscovery.internal
+      Name: !Ref InternalDomain
       VPCs:
         - VPCId: !Ref 'VPC'
           VPCRegion: !Ref 'AWS::Region'
@@ -145,10 +149,19 @@ Resources:
                                 action=/opt/aws/bin/cfn-init -v --region ${AWS::Region} --stack ${AWS::StackName} --resource ECSLaunchConfiguration
 
                         "/etc/init/ecssd_agent.conf":
-                            source: https://raw.githubusercontent.com/awslabs/service-discovery-ecs-dns/1.0/ecssd_agent.conf
                             mode: '000644'
                             owner: root
                             group: root
+                            content: !Sub |
+                                description "Amazon EC2 Container Service Discovery"
+                                start on stopped rc RUNLEVEL=[345]
+                                stop on shutdown
+
+                                exec /usr/local/bin/ecssd_agent --hostname ${InternalDomain} >> /var/log/ecssd_agent.log 2>&1
+
+                                post-stop exec /usr/local/bin/ecssd_agent -remove >> /var/log/ecssd_agent.log 2>&1
+
+                                respawn
                         "/usr/local/bin/ecssd_agent":
                             source: https://github.com/awslabs/service-discovery-ecs-dns/releases/download/1.6/ecssd_agent
                             mode: '000755'
