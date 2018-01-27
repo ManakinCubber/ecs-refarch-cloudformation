@@ -71,7 +71,7 @@ Resources:
         Name: !Ref InternalDomain
         VPCs:
             - VPCId: !Ref 'VPC'
-            VPCRegion: !Ref 'AWS::Region'
+              VPCRegion: !Ref 'AWS::Region'
           
     ECSCluster:
         Type: AWS::ECS::Cluster
