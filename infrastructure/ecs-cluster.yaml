@@ -63,15 +63,15 @@ Mappings:
 
 
 Resources:
-  HostedZone:
-    Type: AWS::Route53::HostedZone
-    Properties:
-      HostedZoneConfig:
-        Comment: Hosted Zone for ECS Service Discovery
-      Name: !Ref InternalDomain
-      VPCs:
-        - VPCId: !Ref 'VPC'
-          VPCRegion: !Ref 'AWS::Region'
+    HostedZone:
+        Type: AWS::Route53::HostedZone
+        Properties:
+        HostedZoneConfig:
+            Comment: Hosted Zone for ECS Service Discovery
+        Name: !Ref InternalDomain
+        VPCs:
+            - VPCId: !Ref 'VPC'
+            VPCRegion: !Ref 'AWS::Region'
           
     ECSCluster:
         Type: AWS::ECS::Cluster

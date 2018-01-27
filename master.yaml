@@ -34,9 +34,9 @@ Parameters:
         Description: Number of hosts in the ECS cluster
         Default: 1
     
-    Domain:
+    EnvDomain:
         Type: String
-        Description: The domain to generate DNS records in Route53
+        Description: The envdomain to generate DNS records in Route53
 
     InternalDomain:
         Type: String
@@ -105,7 +105,7 @@ Resources:
             TemplateURL: https://s3-eu-west-1.amazonaws.com/manakin-cloudformation-templates/infrastructure/services.yaml
             Parameters:
                 EnvironmentName: !Ref AWS::StackName
-                Domain: !Ref Domain
+                Domain: !Ref EnvDomain
                 VPC: !GetAtt VPC.Outputs.VPC
                 ALB80Listener: !GetAtt ALB.Outputs.Listener
                 ALB443Listener: !GetAtt ALB.Outputs.HttpsListener
