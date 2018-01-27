@@ -156,7 +156,7 @@ Resources:
   InvoiceBackTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     Properties:
-      Name: !Sub ${EnvironmentName}-Apy-Back
+      Name: !Sub ${EnvironmentName}-Invoice-Back
       Port: 80
       Protocol: HTTP
       VpcId: !Ref VPC
@@ -172,14 +172,14 @@ Resources:
       Actions:
         - Type: forward
           TargetGroupArn:
-            Ref: ApyBackTargetGroup
+            Ref: InvoiceBackTargetGroup
       Conditions:
         - Field: host-header
           Values:
           - !Sub invoice${EnvDomain}.manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
-      Priority: 2
+      Priority: 4
 
   InvoiceBackListenerHttpsRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -187,19 +187,19 @@ Resources:
       Actions:
         - Type: forward
           TargetGroupArn:
-            Ref: ApyBackTargetGroup
+            Ref: InvoiceBackTargetGroup
       Conditions:
         - Field: host-header
           Values:
           - !Sub invoice${EnvDomain}.manakin.ninja
       ListenerArn:
         Ref: ALB443Listener
-      Priority: 2
+      Priority: 4
 
   invoiceFrontTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     Properties:
-      Name: !Sub ${EnvironmentName}-Apy-Front
+      Name: !Sub ${EnvironmentName}-Invoice-Front
       Port: 80
       Protocol: HTTP
       VpcId: !Ref VPC
@@ -215,14 +215,14 @@ Resources:
       Actions:
         - Type: forward
           TargetGroupArn:
-            Ref: ApyFrontTargetGroup
+            Ref: invoiceFrontTargetGroup
       Conditions:
         - Field: host-header
           Values:
           - !Sub app${EnvDomain}.manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
-      Priority: 3
+      Priority: 5
 
   InvoiceFrontListenerHttpsRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -230,11 +230,11 @@ Resources:
       Actions:
         - Type: forward
           TargetGroupArn:
-            Ref: ApyFrontTargetGroup
+            Ref: invoiceFrontTargetGroup
       Conditions:
         - Field: host-header
           Values:
           - !Sub app${EnvDomain}.manakin.ninja
       ListenerArn:
         Ref: ALB443Listener
-      Priority: 3
+      Priority: 5
