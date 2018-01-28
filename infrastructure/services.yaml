@@ -238,3 +238,46 @@ Resources:
       ListenerArn:
         Ref: ALB443Listener
       Priority: 5
+
+  GatewayTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: !Sub ${EnvironmentName}-Gateway
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref VPC
+      HealthCheckPath: /ping
+      HealthCheckIntervalSeconds: 5
+      HealthCheckTimeoutSeconds: 4
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+
+  GatewayListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: GatewayTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+          - !Sub api${EnvDomain}.manakin.ninja
+      ListenerArn:
+        Ref: ALB80Listener
+      Priority: 6
+
+  GatewayListenerHttpsRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: GatewayTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+          - !Sub api${EnvDomain}.manakin.ninja
+      ListenerArn:
+        Ref: ALB443Listener
+      Priority: 6
