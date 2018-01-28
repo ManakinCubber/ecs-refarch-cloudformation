@@ -157,7 +157,7 @@ Resources:
                                 start on stopped rc RUNLEVEL=[345]
                                 stop on shutdown
 
-                                exec /usr/local/bin/ecssd_agent --hostname ${InternalDomain} >> /var/log/ecssd_agent.log 2>&1
+                                exec /usr/local/bin/ecssd_agent ${InternalDomain} >> /var/log/ecssd_agent.log 2>&1
 
                                 post-stop exec /usr/local/bin/ecssd_agent -remove >> /var/log/ecssd_agent.log 2>&1
 
