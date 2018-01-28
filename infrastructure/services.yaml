@@ -281,3 +281,48 @@ Resources:
       ListenerArn:
         Ref: ALB443Listener
       Priority: 6
+
+  DocumentTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: !Sub ${EnvironmentName}-Document
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref VPC
+      HealthCheckPath: /ping
+      HealthCheckIntervalSeconds: 5
+      HealthCheckTimeoutSeconds: 4
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+
+  DocumentListernerRule:
+    Type:
+    Properties:
+      Actions:
+        - Type: Forward
+          TargetGroupArn:
+            Ref: DocumentApiTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+            - !Sub document${EnvDomain}.manakin.ninja
+      ListenerArn:
+        Ref: ALB80Listener
+      Priority: 7
+
+  DocumentHttpsListernerRule:
+    Type:
+    Properties:
+      Actions:
+        - Type: Forward
+          TargetGroupArn:
+            Ref: DocumentApiTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+            - !Sub document${EnvDomain}.manakin.ninja
+      ListenerArn:
+        Ref: ALB443Listener
+      Priority: 7
+
+
