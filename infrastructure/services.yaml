@@ -342,7 +342,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
     Properties:
       Actions:
-        - Type: Forward
+        - Type: forward
           TargetGroupArn:
             Ref: DocumentTargetGroup
       Conditions:
@@ -357,7 +357,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
     Properties:
       Actions:
-        - Type: Forward
+        - Type: forward
           TargetGroupArn:
             Ref: DocumentTargetGroup
       Conditions:
