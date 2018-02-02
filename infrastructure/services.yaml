@@ -344,7 +344,7 @@ Resources:
       Actions:
         - Type: Forward
           TargetGroupArn:
-            Ref: DocumentApiTargetGroup
+            Ref: DocumentTargetGroup
       Conditions:
         - Field: host-header
           Values:
@@ -359,7 +359,7 @@ Resources:
       Actions:
         - Type: Forward
           TargetGroupArn:
-            Ref: DocumentApiTargetGroup
+            Ref: DocumentTargetGroup
       Conditions:
         - Field: host-header
           Values:
