@@ -46,7 +46,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub consul${EnvDomain}.manakin.ninja
+          - !Sub consul.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
       Priority: 1
@@ -61,7 +61,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub consul${EnvDomain}.manakin.ninja
+          - !Sub consul.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB443Listener
       Priority: 1
@@ -89,7 +89,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub apy${EnvDomain}.manakin.ninja
+          - !Sub apy.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
       Priority: 2
@@ -104,7 +104,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub apy${EnvDomain}.manakin.ninja
+          - !Sub apy.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB443Listener
       Priority: 2
@@ -132,7 +132,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub app${EnvDomain}.apy-paie.fr
+          - !Sub app.${EnvDomain}apy-paie.fr
       ListenerArn:
         Ref: ALB80Listener
       Priority: 3
@@ -147,10 +147,53 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub app${EnvDomain}.apy-paie.fr
+          - !Sub app.${EnvDomain}apy-paie.fr
       ListenerArn:
         Ref: ALB443Listener
       Priority: 3
+
+  ApyVitrineTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: !Sub ${EnvironmentName}-Apy-Vitrine
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref VPC
+      HealthCheckPath: /
+      HealthCheckIntervalSeconds: 5
+      HealthCheckTimeoutSeconds: 4
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+
+  ApyVitrineListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: ApyVitrineTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+          - !Sub ${EnvDomain}apy-paie.fr
+      ListenerArn:
+        Ref: ALB80Listener
+      Priority: 4
+
+  ApyVitrineListenerHttpsRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: ApyVitrineTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+          - !Sub ${EnvDomain}apy-paie.fr
+      ListenerArn:
+        Ref: ALB443Listener
+      Priority: 4
 
 
   InvoiceBackTargetGroup:
@@ -176,10 +219,10 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub invoice${EnvDomain}.manakin.ninja
+          - !Sub invoice.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
-      Priority: 4
+      Priority: 5
 
   InvoiceBackListenerHttpsRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -191,10 +234,10 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub invoice${EnvDomain}.manakin.ninja
+          - !Sub invoice.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB443Listener
-      Priority: 4
+      Priority: 5
 
   invoiceFrontTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
@@ -219,10 +262,10 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub app${EnvDomain}.manakin.ninja
+          - !Sub app.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
-      Priority: 5
+      Priority: 6
 
   InvoiceFrontListenerHttpsRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -234,10 +277,10 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub app${EnvDomain}.manakin.ninja
+          - !Sub app.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB443Listener
-      Priority: 5
+      Priority: 6
 
   GatewayTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
@@ -262,10 +305,10 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub api${EnvDomain}.manakin.ninja
+          - !Sub api.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
-      Priority: 6
+      Priority: 7
 
   GatewayListenerHttpsRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -277,10 +320,10 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub api${EnvDomain}.manakin.ninja
+          - !Sub api.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB443Listener
-      Priority: 6
+      Priority: 7
 
   DocumentTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
@@ -305,10 +348,10 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-            - !Sub document${EnvDomain}.manakin.ninja
+            - !Sub document.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
-      Priority: 7
+      Priority: 8
 
   DocumentHttpsListernerRule:
     Type:
@@ -320,9 +363,9 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-            - !Sub document${EnvDomain}.manakin.ninja
+            - !Sub document.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB443Listener
-      Priority: 7
+      Priority: 8
 
 
