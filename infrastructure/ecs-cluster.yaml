@@ -223,6 +223,7 @@ Resources:
                                 "s3:PutObject",
                                 "s3:ListBucket",
                                 "ses:*",
+                                "sns:*",
                                 "route53:*"
                             ],
                             "Resource": "*"
