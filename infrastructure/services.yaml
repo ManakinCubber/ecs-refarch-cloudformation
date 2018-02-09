@@ -390,4 +390,97 @@ Resources:
         Ref: ALB443Listener
       Priority: 8
 
+  AnnotationBackTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: !Sub ${EnvironmentName}-AnnotationBack
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref VPC
+      HealthCheckPath: /ping
+      HealthCheckIntervalSeconds: 5
+      HealthCheckTimeoutSeconds: 4
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
+
+
+  AnnotationBackListernerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: AnnotationBackTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+            - !Sub annotation.${EnvDomain}manakin.ninja
+      ListenerArn:
+        Ref: ALB80Listener
+      Priority: 9
+
+  AnnotationBackHttpsListernerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: AnnotationBackTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+            - !Sub annotation.${EnvDomain}manakin.ninja
+      ListenerArn:
+        Ref: ALB443Listener
+      Priority: 9
+
+  AnnotationFrontTargetGroup:
+    Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
+    Properties:
+      Name: !Sub ${EnvironmentName}-AnnotationFront
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref VPC
+      HealthCheckPath: /ping
+      HealthCheckIntervalSeconds: 5
+      HealthCheckTimeoutSeconds: 4
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
+
+
+  AnnotationFrontListernerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: AnnotationFrontTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+            - !Sub validator.${EnvDomain}manakin.ninja
+      ListenerArn:
+        Ref: ALB80Listener
+      Priority: 10
+
+  AnnotationFrontHttpsListernerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: AnnotationFrontTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+            - !Sub validator.${EnvDomain}manakin.ninja
+      ListenerArn:
+        Ref: ALB443Listener
+      Priority: 10
 
