@@ -61,3 +61,6 @@ Resources:
             SubnetId: !Ref Subnets
             SecurityGroupIds: !Ref SecurityGroups
             ImageId: ami-fe03b483
+            Tags:
+              - Key: Name
+                Value: !Sub ${EnvironmentName}-Bastion

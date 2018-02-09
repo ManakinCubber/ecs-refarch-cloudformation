@@ -35,6 +35,10 @@ Resources:
       HealthCheckTimeoutSeconds: 4
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
+
 
   ConsulListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -78,6 +82,9 @@ Resources:
       HealthCheckTimeoutSeconds: 4
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
 
   ApyBackListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -121,6 +128,9 @@ Resources:
       HealthCheckTimeoutSeconds: 4
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
 
   ApyFrontListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -208,6 +218,9 @@ Resources:
       HealthCheckTimeoutSeconds: 4
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
 
   InvoiceBackListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -251,6 +264,9 @@ Resources:
       HealthCheckTimeoutSeconds: 4
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
 
   InvoiceFrontListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -294,6 +310,9 @@ Resources:
       HealthCheckTimeoutSeconds: 4
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
 
   GatewayListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
@@ -337,6 +356,9 @@ Resources:
       HealthCheckTimeoutSeconds: 4
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
 
   DocumentListernerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
