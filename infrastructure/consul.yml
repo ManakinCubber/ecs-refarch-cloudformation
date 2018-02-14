@@ -33,19 +33,23 @@ Parameters:
         Description: The instance type for the Consul machine
         Type: String
     SecurityGroups:
-        Description: List of security groups to atatch to the instance
+        Description: List of security groups to attach to the instance
         Type: List<String>
-    ECSInstanceProfile:
-        Type: String
-    ECSRole:
-        Type: String
-    ECSLaunchConfiguration:
-        Type: String
     Subnet:
         Type: String
     EnvironmentName:
         Type: String
 
+Mappings:
+    AWSRegionToAMI:
+        eu-west-3:
+            AMI: ami-17c6736a
+        eu-west-2:
+            AMI: ami-2a676d4e
+        eu-west-1:
+            AMI: ami-24506250
+        eu-central-1:
+            AMI: ami-244c7a39
 Resources:
 
     Consul:
@@ -55,8 +59,7 @@ Resources:
             InstanceType: !Ref InstanceType
             SubnetId: !Ref Subnet
             SecurityGroupIds: !Ref SecurityGroups
-            ImageId: ami-17c6736a
-            IamInstanceProfile: !Ref ECSInstanceProfile
+            ImageId: !FindInMap [AWSRegionToAMI, !Ref "AWS::Region", AMI]
             UserData:
                   "Fn::Base64": !Sub |
                       #!/bin/bash
