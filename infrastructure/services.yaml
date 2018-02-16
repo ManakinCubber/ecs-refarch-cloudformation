@@ -22,12 +22,16 @@ Parameters:
         Description: Choose which listener you want to use for the 443 port
         Type: String
 
+    ConsulInstance:
+        Description: Reference for the instance hosting the Consul Cluster
+        Type: String
+
 Resources:
   ConsulTargetGroup:
     Type: "AWS::ElasticLoadBalancingV2::TargetGroup"
     Properties:
       Name: !Sub ${EnvironmentName}-Consul
-      Port: 80
+      Port: 8500
       Protocol: HTTP
       VpcId: !Ref VPC
       HealthCheckPath: /v1/agent/members
@@ -35,6 +39,10 @@ Resources:
       HealthCheckTimeoutSeconds: 4
       HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
+      TargetType: instance
+      Targets:
+        - Id: !Ref ConsulInstance
+          Port: 8500
       TargetGroupAttributes:
         - Key: deregistration_delay.timeout_seconds
           Value: 30

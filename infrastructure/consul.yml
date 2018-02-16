@@ -1,0 +1,78 @@
+Description: >
+  This template deploys an ECS optimized machine in order to create a Consul Cluster
+
+Mappings:
+
+    # These are the latest ECS optimized AMIs as of August 2017:
+    #
+    #   amzn-ami-2017.03.f-amazon-ecs-optimized
+    #   ECS agent:    1.14.4
+    #   Docker:       17.03.2-ce
+    #   ecs-init:     1.14.4-1
+    #
+    # You can find the latest available on this page of our documentation:
+    # http://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-optimized_AMI.html
+    # (note the AMI identifier is region specific)
+
+    AWSRegionToAMI:
+        eu-west-3:
+            AMI: ami-bd10a7c0
+        eu-west-2:
+            AMI: ami-acd5cdc8
+        eu-west-1:
+            AMI: ami-7827b301
+        eu-central-1:
+            AMI: ami-b378e8dc
+
+Parameters:
+
+    SSHKeyPair:
+        Description: The SSH key used to connect to instance
+        Type: String
+    InstanceType:
+        Description: The instance type for the Consul machine
+        Type: String
+    SecurityGroups:
+        Description: List of security groups to attach to the instance
+        Type: List<String>
+    Subnet:
+        Type: String
+    EnvironmentName:
+        Type: String
+
+Mappings:
+    AWSRegionToAMI:
+        eu-west-3:
+            AMI: ami-17c6736a
+        eu-west-2:
+            AMI: ami-2a676d4e
+        eu-west-1:
+            AMI: ami-24506250
+        eu-central-1:
+            AMI: ami-244c7a39
+Resources:
+
+    Consul:
+        Type: AWS::EC2::Instance
+        Properties:
+            KeyName: !Ref SSHKeyPair
+            InstanceType: !Ref InstanceType
+            SubnetId: !Ref Subnet
+            SecurityGroupIds: !Ref SecurityGroups
+            ImageId: !FindInMap [AWSRegionToAMI, !Ref "AWS::Region", AMI]
+            UserData:
+                  "Fn::Base64": !Sub |
+                      #!/bin/bash
+                      yum install -y aws-cfn-bootstrap
+                      yum install -y docker
+                      yum install -y python27-pip
+                      useradd -aG docker ec2-user
+                      pip install docker-compose
+
+            Tags:
+              - Key: Name
+                Value: !Sub ${EnvironmentName}-Consul
+
+Outputs:
+  Consul:
+      Value: !Ref Consul
