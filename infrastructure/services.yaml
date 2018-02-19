@@ -150,7 +150,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub app.${EnvDomain}apy-paie.fr
+          - !Sub admin.${EnvDomain}apy-paie.fr
       ListenerArn:
         Ref: ALB80Listener
       Priority: 3
@@ -165,7 +165,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-          - !Sub app.${EnvDomain}apy-paie.fr
+          - !Sub admin.${EnvDomain}apy-paie.fr
       ListenerArn:
         Ref: ALB443Listener
       Priority: 3
