@@ -492,3 +492,95 @@ Resources:
         Ref: ALB443Listener
       Priority: 10
 
+  RegexpTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub ${EnvironmentName}-Regexp
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref VPC
+      HealthCheckPath: /ping
+      HealthCheckIntervalSeconds: 5
+      HealthCheckTimeoutSeconds: 4
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
+
+  RegexpListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: RegexpTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+            - !Sub regexp.${envDomain}manakin.ninja
+      ListenerArn:
+        Ref: ALB80Listener
+      Priority: 11
+
+  RegexpHttpsListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: RegexpTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+            - !Sub regexp.${envDomain}manakin.ninja
+      ListenerArn:
+        Ref: ALB443Listener
+      Priority: 11
+
+  RegexpFrontTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub ${EnvironmentName}-Regexp-Front
+      Port: 80
+      Protocol: HTTP
+      VpcId: !Ref VPC
+      HealthCheckPath: /
+      HealthCheckIntervalSeconds: 5
+      HealthCheckTimeoutSeconds: 4
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 2
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: 30
+
+    RegexpFrontListenerRule:
+      Type: AWS::ElasticLoadBalancingV2::ListenerRule
+      Properties:
+        Actions:
+          - Type: forward
+            TargetGroupArn:
+              Ref: RegexpFrontTargetGroup
+        Conditions:
+          - Field: host-header
+            Values:
+              - !Sub regulator.${envDomain}manakin.ninja
+        ListenerArn:
+          Ref: ALB80Listener
+        Priority: 12
+
+  RegexpFrontListenerRule:
+      Type: AWS::ElasticLoadBalancingV2::ListenerRule
+      Properties:
+        Actions:
+          - Type: forward
+            TargetGroupArn:
+              Ref: RegexpFrontTargetGroup
+        Conditions:
+          - Field: host-header
+            Values:
+              - !Sub regulator.${envDomain}manakin.ninja
+        ListenerArn:
+          Ref: ALB443Listener
+        Priority: 12
+
