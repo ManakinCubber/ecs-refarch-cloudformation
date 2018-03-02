@@ -569,7 +569,7 @@ Resources:
           Ref: ALB80Listener
         Priority: 12
 
-  RegexpFrontListenerRule:
+  RegexpFrontHttpsListenerRule:
       Type: AWS::ElasticLoadBalancingV2::ListenerRule
       Properties:
         Actions:
@@ -620,7 +620,7 @@ Resources:
       Priority: 13
 
 
-  AMQPListenerRule:
+  AMQPHttpsListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
     Properties:
       Actions:
