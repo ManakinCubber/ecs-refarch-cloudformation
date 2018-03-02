@@ -614,7 +614,11 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
+<<<<<<< HEAD
             - !Sub amqp.${envDomain}manakin.ninja
+=======
+            - !Sub regulator.${envDomain}manakin.ninja
+>>>>>>> 07087de... Add Target Group and Listener Rules for AMQP
       ListenerArn:
         Ref: ALB80Listener
       Priority: 13
@@ -630,53 +634,11 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
+<<<<<<< HEAD
             - !Sub amqp.${envDomain}manakin.ninja
+=======
+            - !Sub regulator.${envDomain}manakin.ninja
+>>>>>>> 07087de... Add Target Group and Listener Rules for AMQP
       ListenerArn:
         Ref: ALB443Listener
       Priority: 13
-
-  SirenTargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      Name: !Sub ${EnvironmentName}-Regexp
-      Port: 80
-      Protocol: HTTP
-      VpcId: !Ref VPC
-      HealthCheckPath: /ping
-      HealthCheckIntervalSeconds: 5
-      HealthCheckTimeoutSeconds: 4
-      HealthyThresholdCount: 2
-      UnhealthyThresholdCount: 2
-      TargetGroupAttributes:
-        - Key: deregistration_delay.timeout_seconds
-          Value: 30
-
-  SirenListenerRule:
-    Type: AWS::ElasticLoadBalancingV2::ListenerRule
-    Properties:
-      Actions:
-        - Type: forward
-          TargetGroupArn:
-            Ref: AMQPTargetGroup
-      Conditions:
-        - Field: host-header
-          Values:
-            - !Sub siren.${envDomain}manakin.ninja
-      ListenerArn:
-        Ref: ALB80Listener
-      Priority: 14
-
-  SirenListenerRule:
-    Type: AWS::ElasticLoadBalancingV2::ListenerRule
-    Properties:
-      Actions:
-        - Type: forward
-          TargetGroupArn:
-            Ref: AMQPTargetGroup
-      Conditions:
-        - Field: host-header
-          Values:
-            - !Sub siren.${envDomain}manakin.ninja
-      ListenerArn:
-        Ref: ALB443Listener
-      Priority: 14
