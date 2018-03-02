@@ -666,7 +666,7 @@ Resources:
         Ref: ALB80Listener
       Priority: 14
 
-  SirenListenerRule:
+  SirenHttpsListenerRule:
     Type: AWS::ElasticLoadBalancingV2::ListenerRule
     Properties:
       Actions:
