@@ -554,20 +554,20 @@ Resources:
         - Key: deregistration_delay.timeout_seconds
           Value: 30
 
-    RegexpFrontListenerRule:
-      Type: AWS::ElasticLoadBalancingV2::ListenerRule
-      Properties:
-        Actions:
-          - Type: forward
-            TargetGroupArn:
-              Ref: RegexpFrontTargetGroup
-        Conditions:
-          - Field: host-header
-            Values:
-              - !Sub regulator.${envDomain}manakin.ninja
-        ListenerArn:
-          Ref: ALB80Listener
-        Priority: 12
+  RegexpFrontListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      Actions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: RegexpFrontTargetGroup
+      Conditions:
+        - Field: host-header
+          Values:
+            - !Sub regulator.${envDomain}manakin.ninja
+      ListenerArn:
+        Ref: ALB80Listener
+      Priority: 12
 
   RegexpFrontHttpsListenerRule:
       Type: AWS::ElasticLoadBalancingV2::ListenerRule
