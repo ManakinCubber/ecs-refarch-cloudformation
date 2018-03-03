@@ -518,7 +518,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-            - !Sub regexp.${envDomain}manakin.ninja
+            - !Sub regexp.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
       Priority: 11
@@ -533,7 +533,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-            - !Sub regexp.${envDomain}manakin.ninja
+            - !Sub regexp.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB443Listener
       Priority: 11
@@ -564,7 +564,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-            - !Sub regulator.${envDomain}manakin.ninja
+            - !Sub regulator.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
       Priority: 12
@@ -579,7 +579,7 @@ Resources:
         Conditions:
           - Field: host-header
             Values:
-              - !Sub regulator.${envDomain}manakin.ninja
+              - !Sub regulator.${EnvDomain}manakin.ninja
         ListenerArn:
           Ref: ALB443Listener
         Priority: 12
@@ -614,7 +614,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-            - !Sub amqp.${envDomain}manakin.ninja
+            - !Sub amqp.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
       Priority: 13
@@ -630,7 +630,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-            - !Sub amqp.${envDomain}manakin.ninja
+            - !Sub amqp.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB443Listener
       Priority: 13
@@ -661,7 +661,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-            - !Sub siren.${envDomain}manakin.ninja
+            - !Sub siren.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB80Listener
       Priority: 14
@@ -676,7 +676,7 @@ Resources:
       Conditions:
         - Field: host-header
           Values:
-            - !Sub siren.${envDomain}manakin.ninja
+            - !Sub siren.${EnvDomain}manakin.ninja
       ListenerArn:
         Ref: ALB443Listener
       Priority: 14
