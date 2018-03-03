@@ -588,7 +588,7 @@ Resources:
   AMQPTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: !Sub ${EnvironmentName}-Regexp
+      Name: !Sub ${EnvironmentName}-AMQP
       Port: 80
       Protocol: HTTP
       VpcId: !Ref VPC
@@ -638,7 +638,7 @@ Resources:
   SirenTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
-      Name: !Sub ${EnvironmentName}-Regexp
+      Name: !Sub ${EnvironmentName}-Siren
       Port: 80
       Protocol: HTTP
       VpcId: !Ref VPC
