@@ -657,7 +657,7 @@ Resources:
       Actions:
         - Type: forward
           TargetGroupArn:
-            Ref: AMQPTargetGroup
+            Ref: SirenTargetGroup
       Conditions:
         - Field: host-header
           Values:
@@ -672,7 +672,7 @@ Resources:
       Actions:
         - Type: forward
           TargetGroupArn:
-            Ref: AMQPTargetGroup
+            Ref: SirenTargetGroup
       Conditions:
         - Field: host-header
           Values:
