@@ -642,7 +642,7 @@ Resources:
       Port: 80
       Protocol: HTTP
       VpcId: !Ref VPC
-      HealthCheckPath: /ping
+      HealthCheckPath: /v1/ping
       HealthCheckIntervalSeconds: 5
       HealthCheckTimeoutSeconds: 4
       HealthyThresholdCount: 2
